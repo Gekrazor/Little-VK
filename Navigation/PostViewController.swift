@@ -19,6 +19,7 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .gray
         makeButtonToInfo()
+        title = self.somePost?.title
     }
     
     private func makeButtonToInfo() {

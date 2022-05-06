@@ -22,8 +22,7 @@ class FeedViewController: UIViewController {
     
     @objc private func tapButton() {
         let postVC = PostViewController()
-        postVC.somePost = Post(title: "Some post")
-        postVC.title = postVC.somePost?.title
+        postVC.somePost = Post(title: "Post to say sorry")
         navigationController?.pushViewController(postVC, animated: true)
     }
 }
