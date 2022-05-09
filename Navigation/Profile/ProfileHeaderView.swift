@@ -57,7 +57,6 @@ class ProfileHeaderView: UIView {
         statusButton.layer.shadowRadius = 4
         statusButton.layer.shadowOpacity = 0.7
         statusButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
-        
         return statusButton
     }()
     
@@ -66,6 +65,8 @@ class ProfileHeaderView: UIView {
             print(text)
             profileStatusLabel.text = text
             statusSetTextField.text?.removeAll()
+        } else {
+            print("Input status.")
         }
     }
     
@@ -88,7 +89,7 @@ class ProfileHeaderView: UIView {
         if let text = textField.text {
             status = text
         } else {
-            return
+            print("Status is empty.")
         }
     }
 }
