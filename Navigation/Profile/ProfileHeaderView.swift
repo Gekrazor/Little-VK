@@ -31,14 +31,14 @@ class ProfileHeaderView: UIView {
         return avatarView
     }()
     
-    var accountLabel: UILabel = {
+    let accountLabel: UILabel = {
         let accountLabel = UILabel(frame: CGRect(x: 150, y: 27, width: 300, height: 18))
         accountLabel.text = "Guts Official"
         accountLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return accountLabel
     }()
     
-    var profileStatusLabel: UILabel = {
+    let profileStatusLabel: UILabel = {
         let accountLabel = UILabel(frame: CGRect(x: 150, y: 72, width: 300, height: 14))
         accountLabel.text = "I must take revenge"
         accountLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -46,7 +46,7 @@ class ProfileHeaderView: UIView {
         return accountLabel
     }()
     
-    var statusButton: UIButton = {
+    let statusButton: UIButton = {
         let statusButton = UIButton(frame: CGRect(x: 16, y: 153, width: 384, height: 50))
         statusButton.setTitle("Set status", for: .normal)
         statusButton.backgroundColor = .systemBlue
@@ -66,14 +66,12 @@ class ProfileHeaderView: UIView {
             print(text)
             profileStatusLabel.text = text
             statusSetTextField.text?.removeAll()
-        } else {
-            return
         }
     }
     
     var status: String?
     
-    var statusSetTextField: UITextField = {
+    let statusSetTextField: UITextField = {
         let statusSetTextField = UITextField(frame: CGRect(x: 150, y: 99.5, width: 250, height: 40))
         statusSetTextField.layer.borderWidth = 1
         statusSetTextField.layer.borderColor = UIColor.black.cgColor
