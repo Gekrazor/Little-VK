@@ -19,12 +19,12 @@ class MainTabViewController: UITabBarController {
     
     private func setupControllers() {
         let feedNC = UINavigationController(rootViewController: feedVC)
-        feedVC.tabBarItem.title = "News feed"
-        feedVC.tabBarItem.image = UIImage(named: "newspaper.fill")
+        feedVC.tabBarItem.title = "Feed"
+        feedVC.tabBarItem.image = UIImage(named: "house.fill")
         
         let profileNC = UINavigationController(rootViewController: profileVC)
         profileVC.tabBarItem.title = "Profile"
-        profileVC.tabBarItem.image = UIImage(named: "person")
+        profileVC.tabBarItem.image = UIImage(named: "person.fill")
         
         viewControllers = [feedNC, profileNC]
     }
