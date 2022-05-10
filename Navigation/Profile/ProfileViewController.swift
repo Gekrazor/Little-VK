@@ -9,7 +9,12 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    let profileHV = ProfileHeaderView()
+    let profileHV: ProfileHeaderView = {
+        let profileHV = ProfileHeaderView()
+        profileHV.backgroundColor = .lightGray
+        profileHV.translatesAutoresizingMaskIntoConstraints = false
+        return profileHV
+    }()
     
     let tapButton: UIButton = {
         let button = UIButton()
@@ -34,8 +39,6 @@ class ProfileViewController: UIViewController {
         
     private func viewSetup() {
         [profileHV, tapButton].forEach { view.addSubview($0) }
-        profileHV.translatesAutoresizingMaskIntoConstraints = false
-        profileHV.backgroundColor = .lightGray
         
         NSLayoutConstraint.activate([
             // profileHV
