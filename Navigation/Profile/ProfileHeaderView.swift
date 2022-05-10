@@ -11,8 +11,7 @@ class ProfileHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        [avatarView, accountLabel, profileStatusLabel, statusButton, statusSetTextField] .forEach {addSubview($0)}
+        viewsSetup()
     }
     
     required init?(coder: NSCoder) {
@@ -20,34 +19,37 @@ class ProfileHeaderView: UIView {
     }
     
     let avatarView: UIImageView = {
-        let avatarView = UIImageView(frame: CGRect(x: 16, y: 16, width: 100, height: 100))
+        let avatarView = UIImageView()
         avatarView.image = UIImage(named: "Gutsu")
         avatarView.contentMode = .scaleAspectFit
         avatarView.clipsToBounds = true
         avatarView.layer.borderWidth = 3
         avatarView.layer.borderColor = UIColor.white.cgColor
-        avatarView.layer.cornerRadius = avatarView.frame.height / 2.0
+        avatarView.layer.cornerRadius = avatarView.intrinsicContentSize.height / 5
         avatarView.layer.masksToBounds = true
+        avatarView.translatesAutoresizingMaskIntoConstraints = false
         return avatarView
     }()
     
     let accountLabel: UILabel = {
-        let accountLabel = UILabel(frame: CGRect(x: 150, y: 27, width: 300, height: 18))
+        let accountLabel = UILabel()
         accountLabel.text = "Guts Official"
         accountLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        accountLabel.translatesAutoresizingMaskIntoConstraints = false
         return accountLabel
     }()
     
     let profileStatusLabel: UILabel = {
-        let accountLabel = UILabel(frame: CGRect(x: 150, y: 72, width: 300, height: 14))
+        let accountLabel = UILabel()
         accountLabel.text = "I must take revenge"
         accountLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         accountLabel.textColor = .gray
+        accountLabel.translatesAutoresizingMaskIntoConstraints = false
         return accountLabel
     }()
     
     let statusButton: UIButton = {
-        let statusButton = UIButton(frame: CGRect(x: 16, y: 153, width: 384, height: 50))
+        let statusButton = UIButton()
         statusButton.setTitle("Set status", for: .normal)
         statusButton.backgroundColor = .systemBlue
         statusButton.layer.cornerRadius = 4
@@ -57,6 +59,7 @@ class ProfileHeaderView: UIView {
         statusButton.layer.shadowRadius = 4
         statusButton.layer.shadowOpacity = 0.7
         statusButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+        statusButton.translatesAutoresizingMaskIntoConstraints = false
         return statusButton
     }()
     
@@ -73,7 +76,7 @@ class ProfileHeaderView: UIView {
     var status: String?
     
     let statusSetTextField: UITextField = {
-        let statusSetTextField = UITextField(frame: CGRect(x: 150, y: 99.5, width: 250, height: 40))
+        let statusSetTextField = UITextField()
         statusSetTextField.layer.borderWidth = 1
         statusSetTextField.layer.borderColor = UIColor.black.cgColor
         statusSetTextField.backgroundColor = .white
@@ -82,6 +85,7 @@ class ProfileHeaderView: UIView {
         statusSetTextField.textAlignment = .center
         statusSetTextField.placeholder = "Set new status"
         statusSetTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        statusSetTextField.translatesAutoresizingMaskIntoConstraints = false
         return statusSetTextField
     }()
     
@@ -91,5 +95,38 @@ class ProfileHeaderView: UIView {
         } else {
             print("Status is empty.")
         }
+    }
+    
+    private func viewsSetup() {
+        [avatarView, accountLabel, profileStatusLabel, statusButton, statusSetTextField].forEach { addSubview($0) }
+        
+        // activating all views
+        NSLayoutConstraint.activate([
+            // avatarView
+            avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            avatarView.widthAnchor.constraint(equalToConstant: 100),
+            avatarView.heightAnchor.constraint(equalToConstant: 100),
+            
+            // accountLabel
+            accountLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
+            accountLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
+            
+            // statusButton
+            statusButton.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 16),
+            statusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            statusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            statusButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            // profileStatusLabel
+            profileStatusLabel.bottomAnchor.constraint(equalTo: statusSetTextField.topAnchor, constant: -7),
+            profileStatusLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
+            
+            // statusSetTextField
+            statusSetTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -7),
+            statusSetTextField.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
+            statusSetTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            statusSetTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 }
