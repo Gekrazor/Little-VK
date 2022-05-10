@@ -9,14 +9,14 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    let profileHV: ProfileHeaderView = {
+    private lazy var profileHV: ProfileHeaderView = {
         let profileHV = ProfileHeaderView()
         profileHV.backgroundColor = .lightGray
         profileHV.translatesAutoresizingMaskIntoConstraints = false
         return profileHV
     }()
     
-    let tapButton: UIButton = {
+    private lazy var tapButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Tap button", for: .normal)

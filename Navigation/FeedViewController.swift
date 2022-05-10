@@ -9,7 +9,7 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-     let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .green // only for setup
@@ -18,7 +18,7 @@ class FeedViewController: UIViewController {
         return stackView
     }()
     
-    let firstPostButton: UIButton = {
+    private lazy var firstPostButton: UIButton = {
         let firstPostButton = UIButton()
         firstPostButton.setTitle("firstPostButton", for: .normal)
         firstPostButton.backgroundColor = .systemBlue
@@ -33,7 +33,7 @@ class FeedViewController: UIViewController {
         return firstPostButton
     }()
     
-    let secondPostButton: UIButton = {
+    private lazy var secondPostButton: UIButton = {
         let secondPostButton = UIButton()
         secondPostButton.setTitle("secondPostButton", for: .normal)
         secondPostButton.backgroundColor = .systemBlue

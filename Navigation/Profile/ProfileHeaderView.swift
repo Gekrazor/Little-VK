@@ -18,7 +18,7 @@ class ProfileHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let avatarView: UIImageView = {
+    private lazy var avatarView: UIImageView = {
         let avatarView = UIImageView()
         avatarView.image = UIImage(named: "Gutsu")
         avatarView.contentMode = .scaleAspectFit
@@ -31,7 +31,7 @@ class ProfileHeaderView: UIView {
         return avatarView
     }()
     
-    let accountLabel: UILabel = {
+    private lazy var accountLabel: UILabel = {
         let accountLabel = UILabel()
         accountLabel.text = "Guts Official"
         accountLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -39,7 +39,7 @@ class ProfileHeaderView: UIView {
         return accountLabel
     }()
     
-    let profileStatusLabel: UILabel = {
+    private lazy var profileStatusLabel: UILabel = {
         let accountLabel = UILabel()
         accountLabel.text = "I must take revenge"
         accountLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -48,7 +48,7 @@ class ProfileHeaderView: UIView {
         return accountLabel
     }()
     
-    let statusButton: UIButton = {
+    private lazy var statusButton: UIButton = {
         let statusButton = UIButton()
         statusButton.setTitle("Set status", for: .normal)
         statusButton.backgroundColor = .systemBlue
@@ -75,7 +75,7 @@ class ProfileHeaderView: UIView {
     
     var status: String?
     
-    let statusSetTextField: UITextField = {
+    private lazy var statusSetTextField: UITextField = {
         let statusSetTextField = UITextField()
         statusSetTextField.layer.borderWidth = 1
         statusSetTextField.layer.borderColor = UIColor.black.cgColor
