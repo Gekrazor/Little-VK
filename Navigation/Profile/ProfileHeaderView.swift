@@ -17,7 +17,7 @@ class ProfileHeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+        
     private lazy var avatarView: UIImageView = {
         let avatarView = UIImageView()
         avatarView.image = UIImage(named: "Gutsu")
@@ -104,7 +104,7 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.activate([
             // avatarView
             avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            avatarView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             avatarView.widthAnchor.constraint(equalToConstant: 100),
             avatarView.heightAnchor.constraint(equalToConstant: 100),
             
@@ -126,7 +126,7 @@ class ProfileHeaderView: UIView {
             statusSetTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -7),
             statusSetTextField.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
             statusSetTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            statusSetTextField.heightAnchor.constraint(equalToConstant: 40)
+            statusSetTextField.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 }
