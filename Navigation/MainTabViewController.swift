@@ -10,7 +10,7 @@ import UIKit
 class MainTabViewController: UITabBarController {
     
     private lazy var feedVC = FeedViewController()
-    private lazy var profileVC = ProfileViewController()
+    private lazy var logInVC = LogInViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,10 +22,11 @@ class MainTabViewController: UITabBarController {
         feedVC.tabBarItem.title = "Feed"
         feedVC.tabBarItem.image = UIImage(named: "house.fill")
         
-        let profileNC = UINavigationController(rootViewController: profileVC)
-        profileVC.tabBarItem.title = "Profile"
-        profileVC.tabBarItem.image = UIImage(named: "person.fill")
+        let logInVC = UINavigationController(rootViewController: logInVC)
+        logInVC.tabBarItem.title = "Profile"
+        logInVC.tabBarItem.image = UIImage(named: "person.fill")
+        logInVC.navigationBar.isHidden = true
         
-        viewControllers = [feedNC, profileNC]
+        viewControllers = [feedNC, logInVC]
     }
 }

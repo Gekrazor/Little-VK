@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23117370282C436B00B35015 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2311736F282C436B00B35015 /* LogInViewController.swift */; };
 		2344F34728294FF200F54DF6 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2344F34628294FF200F54DF6 /* ProfileHeaderView.swift */; };
 		236106AC282467A300F05A68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236106AB282467A300F05A68 /* SceneDelegate.swift */; };
 		23BB35D9282066D800412D8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BB35D8282066D800412D8D /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2311736F282C436B00B35015 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		2344F34628294FF200F54DF6 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		236106AB282467A300F05A68 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		23BB35D5282066D800412D8D /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +52,7 @@
 			children = (
 				23BB35F62822BEBC00412D8D /* ProfileViewController.swift */,
 				2344F34628294FF200F54DF6 /* ProfileHeaderView.swift */,
+				2311736F282C436B00B35015 /* LogInViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			files = (
 				23BB35DD282066D800412D8D /* FeedViewController.swift in Sources */,
 				236106AC282467A300F05A68 /* SceneDelegate.swift in Sources */,
+				23117370282C436B00B35015 /* LogInViewController.swift in Sources */,
 				23BB35D9282066D800412D8D /* AppDelegate.swift in Sources */,
 				23BB35F72822BEBC00412D8D /* ProfileViewController.swift in Sources */,
 				23BB35F52822BE4200412D8D /* MainTabViewController.swift in Sources */,
