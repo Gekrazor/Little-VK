@@ -9,49 +9,63 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private lazy var profileHV: ProfileHeaderView = {
-        let profileHV = ProfileHeaderView()
-        profileHV.backgroundColor = .lightGray
-        profileHV.translatesAutoresizingMaskIntoConstraints = false
-        return profileHV
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .white
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifire)
+        tableView.separatorInset = .zero
+        return tableView
     }()
     
-    private lazy var tapButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Tap button", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 4
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset.width = 4
-        button.layer.shadowOffset.height = 4
-        button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.7
-        return button
-    }()
-
+    private lazy var postModel = PostModel.makePostModel()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemGray6
         title = "Profile"
         viewSetup()
     }
-        
+    
     private func viewSetup() {
-        [profileHV, tapButton].forEach { view.addSubview($0) }
-        
+        view.addSubview(tableView)
+
         NSLayoutConstraint.activate([
-            // profileHV
-            profileHV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            profileHV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            profileHV.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileHV.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 220),
-            
-            // tapButton
-            tapButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            tapButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tapButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tapButton.heightAnchor.constraint(equalToConstant: 50)
+            // tableView
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        postModel.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifire, for: indexPath) as! PostTableViewCell
+        cell.cellSetup(postModel[indexPath.row])
+        return cell
+    }
+}
+
+extension ProfileViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = ProfileHeaderView()
+        header.backgroundColor = .systemGray6
+        return section == 0 ? header : nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 200 : 0
     }
 }
