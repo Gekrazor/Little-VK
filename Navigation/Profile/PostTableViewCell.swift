@@ -15,6 +15,7 @@ class PostTableViewCell: UITableViewCell {
         view.backgroundColor = .white
         return view
     }()
+    
     private lazy var postLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
