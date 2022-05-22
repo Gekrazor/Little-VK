@@ -112,11 +112,6 @@ class ProfileHeaderView: UIView {
         return button
     }()
     
-    private lazy var animator: UIViewPropertyAnimator = {
-        let animator = UIViewPropertyAnimator()
-        return animator
-    }()
-    
     @objc
     private func tapExitAction() {
         UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
