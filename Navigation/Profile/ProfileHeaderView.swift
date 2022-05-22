@@ -12,6 +12,7 @@ class ProfileHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         viewsSetup()
+        avatarTapGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -21,13 +22,14 @@ class ProfileHeaderView: UIView {
     private lazy var avatarView: UIImageView = {
         let avatarView = UIImageView()
         avatarView.image = UIImage(named: "Gutsu")
-        avatarView.contentMode = .scaleAspectFit
+        avatarView.contentMode = .scaleAspectFill
         avatarView.clipsToBounds = true
         avatarView.layer.borderWidth = 3
         avatarView.layer.borderColor = UIColor.white.cgColor
         avatarView.layer.cornerRadius = avatarView.intrinsicContentSize.height / 5
         avatarView.layer.masksToBounds = true
         avatarView.translatesAutoresizingMaskIntoConstraints = false
+        avatarView.backgroundColor = .black
         return avatarView
     }()
     
@@ -63,7 +65,8 @@ class ProfileHeaderView: UIView {
         return statusButton
     }()
     
-    @objc private func tapButton() {
+    @objc
+    private func tapButton() {
         if let text = status {
             print(text)
             profileStatusLabel.text = text
@@ -89,7 +92,44 @@ class ProfileHeaderView: UIView {
         return statusSetTextField
     }()
     
-    @objc private func statusTextChanged(_ textField: UITextField) {
+    private lazy var hiddenView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        view.layer.opacity = 0
+        view.frame.size.height = UIScreen.main.bounds.height
+        view.frame.size.width = UIScreen.main.bounds.width
+        view.center = CGPoint(x: UIScreen.main.bounds.width - (UIScreen.main.bounds.width / 2), y: UIScreen.main.bounds.height - (UIScreen.main.bounds.height / 2))
+        return view
+    }()
+    
+    private lazy var hiddenButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.opacity = 0
+        button.setImage(UIImage(named: "pip.exit"), for: .normal)
+        button.addTarget(self, action: #selector(tapExitAction), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var animator: UIViewPropertyAnimator = {
+        let animator = UIViewPropertyAnimator()
+        return animator
+    }()
+    
+    @objc
+    private func tapExitAction() {
+        UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            self.hiddenView.layer.opacity = 0
+            self.avatarView.layer.cornerRadius = self.avatarView.intrinsicContentSize.height / 5
+            self.avatarView.layer.frame = CGRect(origin: CGPoint(x: 16, y: 16), size: CGSize(width: 100, height: 100))
+        } completion: { _ in
+            self.hiddenButton.layer.opacity = 0
+        }
+    }
+    
+    @objc
+    private func statusTextChanged(_ textField: UITextField) {
         if let text = textField.text {
             status = text
         } else {
@@ -97,8 +137,29 @@ class ProfileHeaderView: UIView {
         }
     }
     
+    private func avatarTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        avatarView.addGestureRecognizer(tapGesture)
+        avatarView.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func tapAction(gesture: UITapGestureRecognizer) {
+        UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            self.hiddenView.layer.opacity = 0.7
+            self.avatarView.center = CGPoint(x: 50, y: UIScreen.main.bounds.height / 2 - (UIScreen.main.bounds.width / 2 + 60))
+            self.avatarView.layer.cornerRadius = 0
+            self.avatarView.layer.frame.size.height = UIScreen.main.bounds.width
+            self.avatarView.layer.frame.size.width = UIScreen.main.bounds.width
+        } completion: { _ in
+            UIImageView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                self.hiddenButton.layer.opacity = 1
+            }
+        }
+    }
+    
     private func viewsSetup() {
-        [avatarView, accountLabel, profileStatusLabel, statusButton, statusSetTextField].forEach { addSubview($0) }
+        [accountLabel, profileStatusLabel, statusButton, statusSetTextField, hiddenView, hiddenButton, avatarView].forEach { addSubview($0) }
         
         // activating all views
         NSLayoutConstraint.activate([
@@ -111,6 +172,10 @@ class ProfileHeaderView: UIView {
             // accountLabel
             accountLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
             accountLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
+            
+            // hiddenButton
+            hiddenButton.topAnchor.constraint(equalTo: accountLabel.topAnchor),
+            hiddenButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             // statusButton
             statusButton.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 16),
@@ -126,7 +191,7 @@ class ProfileHeaderView: UIView {
             statusSetTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -7),
             statusSetTextField.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 30),
             statusSetTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            statusSetTextField.heightAnchor.constraint(equalToConstant: 30)
+            statusSetTextField.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
 }

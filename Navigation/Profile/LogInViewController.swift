@@ -93,7 +93,8 @@ class LogInViewController: UIViewController {
         return button
     }()
     
-    @objc private func logInTap() {
+    @objc
+    private func logInTap() {
         let profileVC = ProfileViewController()
         
         navigationController?.pushViewController(profileVC, animated: true)
@@ -117,14 +118,16 @@ class LogInViewController: UIViewController {
         notCenter.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc private func keyboardShow(notification: NSNotification) {
+    @objc
+    private func keyboardShow(notification: NSNotification) {
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbdSize.height, right: 0)
         }
     }
     
-    @objc private func keyboardHide(notification: NSNotification) {
+    @objc
+    private func keyboardHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
