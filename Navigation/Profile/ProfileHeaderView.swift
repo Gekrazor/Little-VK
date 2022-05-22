@@ -144,7 +144,7 @@ class ProfileHeaderView: UIView {
     }
     
     @objc
-    private func tapAction(gesture: UITapGestureRecognizer) {
+    private func tapAction() {
         UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.hiddenView.layer.opacity = 0.7
             self.avatarView.center = CGPoint(x: 50, y: UIScreen.main.bounds.height / 2 - (UIScreen.main.bounds.width / 2 + 60))
