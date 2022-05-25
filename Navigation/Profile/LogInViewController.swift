@@ -79,6 +79,18 @@ class LogInViewController: UIViewController {
         return textField
     }()
     
+    private lazy var attentionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .red
+        label.text = "Password too short!"
+        label.isHidden = true
+        return label
+    }()
+    
+    
+    
     private lazy var logInButton: UIButton = {
         let button = UIButton()
         button.setTitle("Log in", for: .normal)
@@ -93,10 +105,20 @@ class LogInViewController: UIViewController {
         return button
     }()
     
-    @objc private func logInTap() {
-        let profileVC = ProfileViewController()
-        
-        navigationController?.pushViewController(profileVC, animated: true)
+    @objc
+    private func logInTap() {
+        if logInTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: logInTextField)
+        } else if passwordTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: passwordTextField)
+        } else if passwordTextField.text!.count < 6 {
+            attentionLabel.isHidden = false
+            Animations.shakingAnimation(on: passwordTextField)
+        } else {
+            let profileVC = ProfileViewController()
+            navigationController?.pushViewController(profileVC, animated: true)
+            attentionLabel.isHidden = true
+        }
     }
     
     override func viewDidLoad() {
@@ -117,14 +139,16 @@ class LogInViewController: UIViewController {
         notCenter.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc private func keyboardShow(notification: NSNotification) {
+    @objc
+    private func keyboardShow(notification: NSNotification) {
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbdSize.height, right: 0)
         }
     }
     
-    @objc private func keyboardHide(notification: NSNotification) {
+    @objc
+    private func keyboardHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
     }
@@ -134,7 +158,7 @@ class LogInViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [VKImage, logInTextFieldsStack, logInButton].forEach { contentView.addSubview($0) }
+        [VKImage, logInTextFieldsStack, logInButton, attentionLabel].forEach { contentView.addSubview($0) }
         
         [logInTextField, passwordTextField].forEach { logInTextFieldsStack.addArrangedSubview($0) }
         
@@ -175,8 +199,12 @@ class LogInViewController: UIViewController {
             passwordTextField.bottomAnchor.constraint(equalTo: logInTextFieldsStack.bottomAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
+            // attntionLabel
+            attentionLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 6),
+            attentionLabel.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor, constant: 10),
+            
             // logInButton
-            logInButton.topAnchor.constraint(equalTo: logInTextFieldsStack.bottomAnchor, constant: sideSpasing),
+            logInButton.topAnchor.constraint(equalTo: attentionLabel.bottomAnchor, constant: sideSpasing),
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: sideSpasing),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -sideSpasing),
             logInButton.heightAnchor.constraint(equalToConstant: 50),

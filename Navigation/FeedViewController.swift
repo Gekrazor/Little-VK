@@ -12,7 +12,7 @@ class FeedViewController: UIViewController {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .green // only for setup
+        stackView.backgroundColor = .systemGray6
         stackView.axis = .vertical
         stackView.spacing = 10
         return stackView
