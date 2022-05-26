@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol TapUIImageViewDelegate: AnyObject {
+    func onImageViewTap(_ model: PostModel)
+}
+
 class PostTableViewCell: UITableViewCell {
+    
+    weak var uiImageViewDelegate: TapUIImageViewDelegate?
+    
+    private var somePost = PostModel(author: "", description: "", image: UIImage(named: "lookingForwardGuts")!, likes: 1, views: 1)
     
     private lazy var whiteView: UIView = {
         let view = UIView()
@@ -62,10 +70,42 @@ class PostTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         layout()
+        likesTapGesture()
+        postImageViewGesture()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func likesTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        postLikesLabel.addGestureRecognizer(tapGesture)
+        postLikesLabel.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func tapAction() {
+        UIImageView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
+            self.somePost.likes += 1
+            self.postLikesLabel.text = "Likes: \(self.somePost.likes)"
+        }
+    }
+    
+    private func postImageViewGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapToView))
+        postImageView.addGestureRecognizer(tapGesture)
+        postImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func tapToView() {
+        let postVC = PostVC()
+        self.window!.rootViewController?.present(postVC, animated: true, completion: nil)
+        
+        self.somePost.views += 1
+        self.postViewsLabel.text = "Views: \(somePost.views)"
+        postVC.postView.uiImageViewDelegate?.onImageViewTap(self.somePost)
     }
     
     func cellSetup(_ model: PostModel) {
@@ -113,5 +153,13 @@ class PostTableViewCell: UITableViewCell {
             postViewsLabel.trailingAnchor.constraint(equalTo: whiteView.trailingAnchor, constant: -standartInset),
             postViewsLabel.bottomAnchor.constraint(equalTo: whiteView.bottomAnchor, constant: -standartInset)
         ])
+    }
+}
+
+extension PostTableViewCell: TapUIImageViewDelegate {
+    func onImageViewTap(_ model: PostModel) {
+        self.postLabel.text = model.author
+        self.postImageView.image = model.image
+        self.postDescriptionTextLabel.text = model.description
     }
 }

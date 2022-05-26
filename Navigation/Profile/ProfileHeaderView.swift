@@ -73,6 +73,7 @@ class ProfileHeaderView: UIView {
             statusSetTextField.text?.removeAll()
         } else {
             print("Input status.")
+            Animations.shakingAnimation(on: statusSetTextField)
         }
     }
     
@@ -89,6 +90,7 @@ class ProfileHeaderView: UIView {
         statusSetTextField.placeholder = "Set new status"
         statusSetTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         statusSetTextField.translatesAutoresizingMaskIntoConstraints = false
+        statusSetTextField.delegate = self
         return statusSetTextField
     }()
     
@@ -188,5 +190,13 @@ class ProfileHeaderView: UIView {
             statusSetTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             statusSetTextField.heightAnchor.constraint(equalToConstant: 30),
         ])
+    }
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        return true
     }
 }
