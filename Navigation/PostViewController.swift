@@ -14,7 +14,7 @@ struct Post {
 class PostViewController: UIViewController {
     
     var somePost: Post?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray

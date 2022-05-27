@@ -22,7 +22,7 @@ class ProfileViewController: UIViewController {
     }()
     
     private lazy var postModel = PostModel.makePostModel()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray6
@@ -32,7 +32,7 @@ class ProfileViewController: UIViewController {
     
     private func viewSetup() {
         view.addSubview(tableView)
-
+        
         NSLayoutConstraint.activate([
             // tableView
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -55,7 +55,7 @@ extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         2
     }
-        
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section < 1 {
@@ -65,6 +65,7 @@ extension ProfileViewController: UITableViewDataSource {
         
         let postCell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifire, for: indexPath) as! PostTableViewCell
         postCell.cellSetup(postModel[indexPath.row])
+        postCell.somePostModel = postModel[indexPath.row]
         return postCell
     }
 }

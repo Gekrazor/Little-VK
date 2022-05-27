@@ -30,5 +30,4 @@ class PostVC: UIViewController {
             postView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-
 }

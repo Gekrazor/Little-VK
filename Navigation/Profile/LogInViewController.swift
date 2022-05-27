@@ -108,10 +108,7 @@ class LogInViewController: UIViewController {
     
     @objc
     private func logInTap() {
-        let profileVC = ProfileViewController()
-        navigationController?.pushViewController(profileVC, animated: true)
-        attentionLabel.isHidden = true
-//        login()
+        login()
     }
     
     override func viewDidLoad() {
@@ -121,33 +118,33 @@ class LogInViewController: UIViewController {
     }
     
     private func login() {
-//        if logInTextField.text!.isEmpty {
-//            Animations.shakingAnimation(on: logInTextField)
-//        } else if passwordTextField.text!.isEmpty {
-//            Animations.shakingAnimation(on: passwordTextField)
-//        } else if logInTextField.text != myLogin.login {
-//            let alert = UIAlertController(title: "Error", message: "Login is wrong", preferredStyle: .alert)
-//
-//            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
-//                self.dismiss(animated: true)
-//            }
-//
-//            alert.addAction(okAction)
-//            present(alert, animated: true)
-//        } else if passwordTextField.text != myLogin.password {
-//            let alert = UIAlertController(title: "Error", message: "Password is wrong", preferredStyle: .alert)
-//
-//            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
-//                self.dismiss(animated: true)
-//            }
-//
-//            alert.addAction(okAction)
-//            present(alert, animated: true)
-//        } else {
-//            let profileVC = ProfileViewController()
-//            navigationController?.pushViewController(profileVC, animated: true)
-//            attentionLabel.isHidden = true
-//        }
+        if logInTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: logInTextField)
+        } else if passwordTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: passwordTextField)
+        } else if logInTextField.text != myLogin.login {
+            let alert = UIAlertController(title: "Error", message: "Login is wrong", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else if passwordTextField.text != myLogin.password {
+            let alert = UIAlertController(title: "Error", message: "Password is wrong", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else {
+            let profileVC = ProfileViewController()
+            navigationController?.pushViewController(profileVC, animated: true)
+            attentionLabel.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -9,12 +9,13 @@ import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
     
-    private lazy var photoImageView: UIImageView = {
+    lazy var photoImageView: UIImageView = {
         let photo = UIImageView()
         photo.translatesAutoresizingMaskIntoConstraints = false
         photo.contentMode = .scaleAspectFill
         photo.clipsToBounds = true
         photo.backgroundColor = .systemGray6
+        photo.contentScaleFactor = .leastNormalMagnitude
         return photo
     }()
     
@@ -34,16 +35,13 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     private func layout() {
         contentView.backgroundColor = .white
-        contentView.contentMode = .scaleAspectFit
-        contentView.clipsToBounds = true
         contentView.addSubview(photoImageView)
         
         NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            photoImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            photoImageView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            photoImageView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            photoImageView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-    
 }

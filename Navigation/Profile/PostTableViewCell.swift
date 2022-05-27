@@ -7,15 +7,9 @@
 
 import UIKit
 
-protocol TapUIImageViewDelegate: AnyObject {
-    func onImageViewTap(_ model: PostModel)
-}
-
 class PostTableViewCell: UITableViewCell {
     
-    weak var uiImageViewDelegate: TapUIImageViewDelegate?
-    
-    private var somePost = PostModel(author: "", description: "", image: UIImage(named: "lookingForwardGuts")!, likes: 1, views: 1)
+    var somePostModel: PostModel?
     
     private lazy var whiteView: UIView = {
         let view = UIView()
@@ -77,7 +71,7 @@ class PostTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func likesTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
         postLikesLabel.addGestureRecognizer(tapGesture)
@@ -87,8 +81,8 @@ class PostTableViewCell: UITableViewCell {
     @objc
     private func tapAction() {
         UIImageView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
-            self.somePost.likes += 1
-            self.postLikesLabel.text = "Likes: \(self.somePost.likes)"
+            self.somePostModel?.likes += 1
+            self.postLikesLabel.text = "Likes: \(self.somePostModel?.likes ?? 0)"
         }
     }
     
@@ -101,11 +95,18 @@ class PostTableViewCell: UITableViewCell {
     @objc
     private func tapToView() {
         let postVC = PostVC()
+        postVC.postView.postImageView.image = somePostModel?.image
+        postVC.postView.postLabel.text = somePostModel?.author
+        postVC.postView.postDescriptionTextLabel.text = somePostModel?.description
+        postVC.postView.postLikesLabel.text = "Likes: \(somePostModel?.likes ?? 0)"
+        postVC.postView.postDescriptionTextLabel.textColor = .black
+        postVC.postView.postDescriptionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        
         self.window!.rootViewController?.present(postVC, animated: true, completion: nil)
         
-        self.somePost.views += 1
-        self.postViewsLabel.text = "Views: \(somePost.views)"
-        postVC.postView.uiImageViewDelegate?.onImageViewTap(self.somePost)
+        self.somePostModel?.views += 1
+        self.postViewsLabel.text = "Views: \(somePostModel?.views ?? 0)"
+        postVC.postView.postViewsLabel.text = "Views: \(somePostModel?.views ?? 0)"
     }
     
     func cellSetup(_ model: PostModel) {
@@ -153,13 +154,5 @@ class PostTableViewCell: UITableViewCell {
             postViewsLabel.trailingAnchor.constraint(equalTo: whiteView.trailingAnchor, constant: -standartInset),
             postViewsLabel.bottomAnchor.constraint(equalTo: whiteView.bottomAnchor, constant: -standartInset)
         ])
-    }
-}
-
-extension PostTableViewCell: TapUIImageViewDelegate {
-    func onImageViewTap(_ model: PostModel) {
-        self.postLabel.text = model.author
-        self.postImageView.image = model.image
-        self.postDescriptionTextLabel.text = model.description
     }
 }
