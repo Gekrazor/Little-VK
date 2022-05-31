@@ -9,6 +9,8 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     
+    var somePostModel: PostModel?
+    
     private lazy var whiteView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +64,49 @@ class PostTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         layout()
+        likesTapGesture()
+        postImageViewGesture()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func likesTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        postLikesLabel.addGestureRecognizer(tapGesture)
+        postLikesLabel.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func tapAction() {
+        UIImageView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut) {
+            self.somePostModel?.likes += 1
+            self.postLikesLabel.text = "Likes: \(self.somePostModel?.likes ?? 0)"
+        }
+    }
+    
+    private func postImageViewGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapToView))
+        postImageView.addGestureRecognizer(tapGesture)
+        postImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func tapToView() {
+        let postVC = PostVC()
+        postVC.postView.postImageView.image = somePostModel?.image
+        postVC.postView.postLabel.text = somePostModel?.author
+        postVC.postView.postDescriptionTextLabel.text = somePostModel?.description
+        postVC.postView.postLikesLabel.text = "Likes: \(somePostModel?.likes ?? 0)"
+        postVC.postView.postDescriptionTextLabel.textColor = .black
+        postVC.postView.postDescriptionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        
+        self.window!.rootViewController?.present(postVC, animated: true, completion: nil)
+        
+        self.somePostModel?.views += 1
+        self.postViewsLabel.text = "Views: \(somePostModel?.views ?? 0)"
+        postVC.postView.postViewsLabel.text = "Views: \(somePostModel?.views ?? 0)"
     }
     
     func cellSetup(_ model: PostModel) {
