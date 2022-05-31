@@ -9,6 +9,8 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    let myLogin = Account(login: "noName@gmail.com", password: "123456789")
+    
     private lazy var notCenter: NotificationCenter = {
         let nc = NotificationCenter.default
         return nc
@@ -76,6 +78,7 @@ class LogInViewController: UIViewController {
         textField.autocapitalizationType = .none
         textField.isSecureTextEntry = true
         textField.delegate = self
+        textField.addTarget(self, action: #selector(LogInViewController.textFieldShouldReturn(_:)), for: .editingDidEnd)
         return textField
     }()
     
@@ -84,12 +87,10 @@ class LogInViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         label.textColor = .red
-        label.text = "Password too short!"
+        label.text = "Password should have at least 6 symbols!"
         label.isHidden = true
         return label
     }()
-    
-    
     
     private lazy var logInButton: UIButton = {
         let button = UIButton()
@@ -107,24 +108,43 @@ class LogInViewController: UIViewController {
     
     @objc
     private func logInTap() {
-        if logInTextField.text!.isEmpty {
-            Animations.shakingAnimation(on: logInTextField)
-        } else if passwordTextField.text!.isEmpty {
-            Animations.shakingAnimation(on: passwordTextField)
-        } else if passwordTextField.text!.count < 6 {
-            attentionLabel.isHidden = false
-            Animations.shakingAnimation(on: passwordTextField)
-        } else {
-            let profileVC = ProfileViewController()
-            navigationController?.pushViewController(profileVC, animated: true)
-            attentionLabel.isHidden = true
-        }
+        login()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         layout()
+    }
+    
+    private func login() {
+        if logInTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: logInTextField)
+        } else if passwordTextField.text!.isEmpty {
+            Animations.shakingAnimation(on: passwordTextField)
+        } else if logInTextField.text != myLogin.login {
+            let alert = UIAlertController(title: "Error", message: "Login is wrong", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else if passwordTextField.text != myLogin.password {
+            let alert = UIAlertController(title: "Error", message: "Password is wrong", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default) {_ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else {
+            let profileVC = ProfileViewController()
+            navigationController?.pushViewController(profileVC, animated: true)
+            attentionLabel.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -224,7 +244,14 @@ extension UIImage {
 }
 
 extension LogInViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if self.passwordTextField.text == nil {
+            self.passwordTextField.text = "" }
+        if self.passwordTextField.text!.count < 6 {
+            self.attentionLabel.isHidden = false }
+        if self.passwordTextField.text!.count >= 6 {
+            self.attentionLabel.isHidden = true }
         view.endEditing(true)
         return true
     }

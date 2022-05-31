@@ -16,7 +16,6 @@ class PhotosViewController: UIViewController {
     
     private lazy var photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .white
@@ -25,7 +24,48 @@ class PhotosViewController: UIViewController {
         collection.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifire)
         return collection
     }()
-
+    
+    private lazy var hiddenView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        view.layer.opacity = 0
+        view.frame.size.height = UIScreen.main.bounds.height
+        view.frame.size.width = UIScreen.main.bounds.width
+        view.center = CGPoint(x: UIScreen.main.bounds.width - (UIScreen.main.bounds.width / 2), y: UIScreen.main.bounds.height - (UIScreen.main.bounds.height / 2))
+        return view
+    }()
+    
+    private lazy var hiddenButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.opacity = 0
+        button.setImage(UIImage(named: "pip.exit"), for: .normal)
+        button.addTarget(self, action: #selector(tapExitAction), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc
+    private func tapExitAction() {
+        UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            self.hiddenView.layer.opacity = 0
+            self.selectedImageView.layer.opacity = 0
+        } completion: { _ in
+            self.hiddenButton.layer.opacity = 0
+        }
+    }
+    
+    private lazy var selectedImageView: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFill
+        image.layer.opacity = 0
+        image.layer.masksToBounds = false
+        image.clipsToBounds = true
+        image.backgroundColor = .black
+        return image
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewSetup()
@@ -44,13 +84,24 @@ class PhotosViewController: UIViewController {
     }
     
     private func layout() {
-        view.addSubview(photoCollectionView)
+        [photoCollectionView, hiddenView, selectedImageView, hiddenButton].forEach { view.addSubview($0) }
         
         NSLayoutConstraint.activate([
+            // photoCollectionView
             photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            // selectedImageView
+            selectedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            selectedImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            selectedImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            selectedImageView.heightAnchor.constraint(equalTo: selectedImageView.widthAnchor, multiplier: 1),
+            
+            // hiddenButton
+            hiddenButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            hiddenButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
         ])
     }
 }
@@ -89,5 +140,17 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: sideInset, left: sideInset, bottom: sideInset, right: sideInset)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        UIImageView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            self.hiddenView.layer.opacity = 0.7
+            self.selectedImageView.image = self.photoArr[indexPath.row].image
+            self.selectedImageView.layer.opacity = 1
+        } completion: { _ in
+            UIImageView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                self.hiddenButton.layer.opacity = 1
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 class Animations {
-   
+    
     static func shakingAnimation(on onView: UIView) {
         let animation = CABasicAnimation(keyPath: "position")
         animation.duration = 0.07
@@ -19,4 +19,3 @@ class Animations {
         onView.layer.add(animation, forKey: "position")
     }
 }
-
