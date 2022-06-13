@@ -12,4 +12,4 @@ This project is created to increase my basic swift skills.
 Project is created with:
 * Swift
 * UIKit
-	
+* Layout with code	
